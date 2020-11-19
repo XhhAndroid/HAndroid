@@ -1,0 +1,3 @@
+rootProject.name='H'
+include ':app'
+include ':handroid'
