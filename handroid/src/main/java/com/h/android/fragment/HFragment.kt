@@ -12,7 +12,7 @@ import com.h.android.utils.HLog
  *@author zhangxiaohui
  *@describe
  */
-class HFragment : Fragment(){
+open class HFragment : Fragment(){
     private var rootView: View? = null
     private var firstCreateView = true
 

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
  *@author zhangxiaohui
  *@describe
  */
-class HActivity : AppCompatActivity(){
+open class HActivity : AppCompatActivity(){
 
     @CallSuper
     override fun onRequestPermissionsResult(
