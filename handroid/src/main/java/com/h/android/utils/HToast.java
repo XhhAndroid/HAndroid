@@ -36,7 +36,7 @@ import java.lang.reflect.Proxy;
  * @author zhangxiaohui
  * @describe
  */
-public class ToastUtils {
+public class HToast {
     public enum ToastType {
         NORMAL,
         ERROR,
@@ -48,7 +48,7 @@ public class ToastUtils {
     private static Object iNotificationManagerObj;
     private static CharSequence noticeString;
 
-    private ToastUtils() {
+    private HToast() {
     }
 
     /**
