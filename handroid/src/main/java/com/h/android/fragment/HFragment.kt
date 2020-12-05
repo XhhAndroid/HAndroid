@@ -39,7 +39,7 @@ open class HFragment : Fragment(){
      * @param savedInstanceState
      * @return
      */
-    protected fun onCreateViewOnce(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    open fun onCreateViewOnce(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return null
     }
 
@@ -48,7 +48,7 @@ open class HFragment : Fragment(){
      * @param view
      * @param savedInstanceState
      */
-    protected fun onViewCreateOnce(view: View, savedInstanceState: Bundle?) {
+    open fun onViewCreateOnce(view: View, savedInstanceState: Bundle?) {
     }
 
 
