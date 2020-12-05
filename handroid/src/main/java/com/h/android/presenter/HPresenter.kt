@@ -16,7 +16,7 @@ import java.util.*
  *@author zhangxiaohui
  *@describe
  */
-class HPresenter<V>(private val lifecycleOwner: LifecycleOwner, private val view: V?) : LifecyclePresenter<V>,
+open class HPresenter<V>(private val lifecycleOwner: LifecycleOwner, private val view: V?) : LifecyclePresenter<V>,
     FullLifecycleObserver {
     private var lifecycleObserverAdapter : FullLifecycleObserverAdapter? = null
 
