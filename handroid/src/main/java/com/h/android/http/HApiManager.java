@@ -6,12 +6,12 @@ package com.h.android.http;
  * @author zhangxiaohui
  * @describe
  */
-public class ApiManager {
-    private static ApiManager apiManager;
+public class HApiManager {
+    private static HApiManager apiManager;
 
-    public static ApiManager getInstance(){
+    public static HApiManager getInstance(){
         if(apiManager == null){
-            apiManager = new ApiManager();
+            apiManager = new HApiManager();
         }
         return apiManager;
     }
