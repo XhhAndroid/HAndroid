@@ -78,14 +78,14 @@ class HttpLogInterceptor : Interceptor {
             return str
         }
         val responseBody = response.body()
-        val contentLength = responseBody.contentLength()
-        val source = responseBody.source()
+        val contentLength = responseBody?.contentLength()
+        val source = responseBody?.source()
         try {
-            source.request(Long.MAX_VALUE) // Buffer the entire body.
+            source?.request(Long.MAX_VALUE) // Buffer the entire body.
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        val buffer: Buffer = source.buffer()
+        val buffer: Buffer = source!!.buffer()
         val charset: Charset = Charset.forName(UTF8)
         if (contentLength != 0L) {
             str = buffer.clone().readString(charset)
