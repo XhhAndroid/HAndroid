@@ -1,7 +1,10 @@
 package com.h.android.http;
 
+import com.h.android.http.annotation.NetworkInterceptor;
+
 import java.util.concurrent.ConcurrentHashMap;
 
+import okhttp3.Interceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -71,6 +74,30 @@ public class Hhttp {
             baseUrl = baseUrlProviderAnnotation.value().newInstance().getBaseUrl(apiClazz);
         } else {
             baseUrl = baseUrlAnnotation.value();
+        }
+
+        //拦截器可选
+        com.h.android.http.annotation.Interceptor interceptorAnnotation = apiClazz.getAnnotation(com.h.android.http.annotation.Interceptor.class);
+        if (interceptorAnnotation != null) {
+            Class<? extends Interceptor>[] value = interceptorAnnotation.value();
+            if (value != null) {
+                for (Class<? extends Interceptor> in : value) {
+                    Interceptor interceptor = in.newInstance();
+                    ohcb.addInterceptor(interceptor);
+                }
+            }
+        }
+
+        //网络拦截器
+        NetworkInterceptor networkInterceptorAnnotation = apiClazz.getAnnotation(NetworkInterceptor.class);
+        if (networkInterceptorAnnotation != null) {
+            Class<? extends Interceptor>[] value = networkInterceptorAnnotation.value();
+            if (value != null) {
+                for (Class<? extends Interceptor> in : value) {
+                    Interceptor interceptor = in.newInstance();
+                    ohcb.addNetworkInterceptor(interceptor);
+                }
+            }
         }
 
         // 初始化Retrofit

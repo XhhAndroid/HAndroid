@@ -1,4 +1,4 @@
-package com.h.android.http.interceptor
+package com.h.android.http.annotation
 
 import okhttp3.Interceptor
 import java.lang.annotation.Inherited
