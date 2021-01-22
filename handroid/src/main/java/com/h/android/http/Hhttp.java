@@ -1,6 +1,7 @@
 package com.h.android.http;
 
 import com.h.android.http.annotation.NetworkInterceptor;
+import com.h.android.http.interceptor.BaseUrlProvider;
 
 import java.util.concurrent.ConcurrentHashMap;
 
