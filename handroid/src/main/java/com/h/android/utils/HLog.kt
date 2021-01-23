@@ -3,6 +3,7 @@ package com.h.android.utils
 import android.text.TextUtils
 import android.util.Log
 import com.h.android.BuildConfig
+import com.h.android.HAndroid
 
 /**
  *2020/11/20
@@ -16,7 +17,7 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!BuildConfig.DEBUG) {
+        if (!HAndroid.isDebug()) {
             return
         }
         Log.e(TAG, text)
@@ -26,7 +27,7 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!BuildConfig.DEBUG) {
+        if (!HAndroid.isDebug()) {
             return
         }
         Log.w(TAG, text)
@@ -36,7 +37,7 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!BuildConfig.DEBUG) {
+        if (!HAndroid.isDebug()) {
             return
         }
         Log.d(TAG, text)
@@ -46,7 +47,7 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!BuildConfig.DEBUG) {
+        if (!HAndroid.isDebug()) {
             return
         }
         Log.i(TAG, text)

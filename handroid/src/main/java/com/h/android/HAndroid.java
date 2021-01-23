@@ -18,6 +18,7 @@ public class HAndroid {
 
     private static Application application;
     private static AndroidActivityStackProvider activityStackProvider;
+    private static boolean logDebug = false;
 
     public static void init(Builder builder) {
         if (application == null) {
@@ -30,12 +31,21 @@ public class HAndroid {
         }
     }
 
+    public static boolean isDebug(){
+        return logDebug;
+    }
+
     public static class Builder {
 
         Application application;
 
         public Builder(@NonNull Application application) {
             this.application = Objects.requireNonNull(application);
+        }
+
+        public Builder setDebug(boolean debug) {
+            HAndroid.logDebug = debug;
+            return this;
         }
     }
 

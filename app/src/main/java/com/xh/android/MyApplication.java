@@ -16,6 +16,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        HAndroid.init(new HAndroid.Builder(this));
+        HAndroid.init(new HAndroid.Builder(this).setDebug(true));
     }
 }
