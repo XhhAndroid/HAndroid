@@ -68,9 +68,7 @@ abstract class HRecyclerViewAdapter<V : ViewDataBinding, T> : RecyclerView.Adapt
      * 绑定监听事件
      */
     fun bindListener(holder: V, view: View, entity: T, pos: Int) {
-        view.setOnClickListener { v ->
-            adapterViewListener?.viewListener(holder, v, entity, pos);
-        }
+        adapterViewListener?.viewListener(holder, view, entity, pos)
     }
 
     @LayoutRes
