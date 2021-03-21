@@ -63,7 +63,9 @@ abstract class HRecyclerViewAdapter<V : ViewBinding, T> : RecyclerView.Adapter<H
      * 绑定监听事件
      */
     fun bindListener(holder: V, view: View, entity: T, pos: Int) {
-        view.setOnClickListener { adapterViewListener?.viewListener(holder, view, entity, pos) }
+        view.setOnClickListener {
+            adapterViewListener?.viewListener(holder, view, entity, pos)
+        }
     }
 
     abstract fun bindItemViewHolder(holder: V?, pos: Int, entity: T)

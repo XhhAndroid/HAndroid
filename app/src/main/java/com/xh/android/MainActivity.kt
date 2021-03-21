@@ -2,9 +2,10 @@ package com.xh.android
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.h.android.adapter.AdapterViewListener
-import com.h.android.adapter.HViewHolder
+import com.h.android.dialog.BaseAlertDialog
 import com.h.android.utils.HToast
 import com.xh.android.databinding.ActivityMainBinding
 import com.xh.android.databinding.AdapterLayoutBinding
@@ -24,14 +25,19 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setAdapterViewListener(object : AdapterViewListener<AdapterLayoutBinding, String> {
             override fun viewListener(holder: AdapterLayoutBinding, view: View, t: String, pos: Int) {
-                if (holder.textTv == view) {
-                    HToast.showToastNormal(t)
-                } else {
-                    HToast.showToastNormal("--->" + t)
-                }
+                BaseAlertDialog(this@MainActivity)
+                    .setDialogTitle("温馨提示")
+                    .setDialogMessage("点击item" + t)
+                    .addOkButton("OK", object : BaseAlertDialog.ActionBarListener {
+                        override fun viewOnclickListener(textView: TextView?) {
+                            if (holder.textTv == view) {
+                                HToast.showToastNormal(t)
+                            } else {
+                                HToast.showToastNormal("--->" + t)
+                            }
+                        }
+                    }).show()
             }
-
-
         })
         recyclerView.adapter = adapter
 
