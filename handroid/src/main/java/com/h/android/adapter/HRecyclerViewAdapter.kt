@@ -1,12 +1,9 @@
 package com.h.android.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import org.jetbrains.annotations.NotNull
 
 /**
@@ -14,7 +11,7 @@ import org.jetbrains.annotations.NotNull
  *@author zhangxiaohui
  *@describe
  */
-abstract class HRecyclerViewAdapter<V : ViewDataBinding, T> : RecyclerView.Adapter<HViewHolder<V>>() {
+abstract class HRecyclerViewAdapter<V : ViewBinding, T> : RecyclerView.Adapter<HViewHolder<V>>() {
 
     private var mutableList: MutableList<T> = mutableListOf()
     private var hViewHolder: HViewHolder<V>? = null
@@ -29,15 +26,13 @@ abstract class HRecyclerViewAdapter<V : ViewDataBinding, T> : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HViewHolder<V> {
-        val viewDataBinding: ViewDataBinding = createView(getLayoutId(), parent)
-        hViewHolder = HViewHolder(viewDataBinding.root)
-        hViewHolder!!.setV(viewDataBinding as V)
-        return hViewHolder as HViewHolder<V>
+        val view: V = createView(parent, viewType)
+        val viewHolder: HViewHolder<V> = HViewHolder(view.root)
+        viewHolder.setV(view)
+        return viewHolder
     }
 
-    private fun createView(@LayoutRes layout: Int, viewGroup: ViewGroup): ViewDataBinding {
-        return DataBindingUtil.inflate(LayoutInflater.from(viewGroup.context), layout, viewGroup, false)
-    }
+    abstract fun createView(parent: ViewGroup, viewType: Int): V
 
     override fun getItemCount(): Int {
         return mutableList.size
@@ -68,11 +63,8 @@ abstract class HRecyclerViewAdapter<V : ViewDataBinding, T> : RecyclerView.Adapt
      * 绑定监听事件
      */
     fun bindListener(holder: V, view: View, entity: T, pos: Int) {
-        adapterViewListener?.viewListener(holder, view, entity, pos)
+        view.setOnClickListener { adapterViewListener?.viewListener(holder, view, entity, pos) }
     }
-
-    @LayoutRes
-    abstract fun getLayoutId(): Int
 
     abstract fun bindItemViewHolder(holder: V?, pos: Int, entity: T)
 
