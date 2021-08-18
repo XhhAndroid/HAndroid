@@ -53,4 +53,8 @@ dependencies {
     //原生库
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.2.0'
+
+    //androidx
+    implementation "androidx.activity:activity:1.2.3"
+    implementation "androidx.fragment:fragment:1.3.6"
 }

@@ -77,7 +77,7 @@ public class HAndroid {
 
     public static Application getApplication() {
         if (application == null) {
-            throw new NullPointerException("you need call XXF.init function");
+            throw new NullPointerException("you need call HAndroid.init function in application's onCreate");
         }
         return application;
     }

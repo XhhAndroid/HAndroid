@@ -1,8 +1,9 @@
-package com.h.android.utils
+package com.h.android.utils.view
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
+import com.h.android.utils.SpringScaleInterpolator
 
 /**
  *2020/11/20

@@ -11,7 +11,7 @@ import com.h.android.HAndroid
  *@describe
  */
 object HLog {
-    private val TAG = "com.bkex"
+    private val TAG = "Hlog->"
 
     fun e(text: String?) {
         if (TextUtils.isEmpty(text)) {

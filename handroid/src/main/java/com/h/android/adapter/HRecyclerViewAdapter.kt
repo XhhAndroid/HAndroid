@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull
 /**
  *2020/11/27
  *@author zhangxiaohui
- *@describe
+ *@describe 针对kotlin使用recycler的适配器
  */
 abstract class HRecyclerViewAdapter<V : ViewBinding, T> : RecyclerView.Adapter<HViewHolder<V>>() {
 

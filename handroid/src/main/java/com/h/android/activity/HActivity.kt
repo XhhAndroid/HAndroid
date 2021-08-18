@@ -1,31 +1,61 @@
 package com.h.android.activity
 
 import android.content.Intent
-import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import com.h.android.utils.HLog
 
 /**
  *2020/11/27
  *@author zhangxiaohui
  *@describe
  */
-open class HActivity : AppCompatActivity(){
+open class HActivity : ComponentActivity() {
 
-    @CallSuper
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    //must call register before onResume
+    //功能同startActivityForResult
+    private var startActivityForResult: ActivityResultLauncher<Intent>? = null
+    private var activityResultListener: ActivityResultCallback<ActivityResult>? = null
+
+    private var requestPermissions: ActivityResultLauncher<Array<String>>? = null
+    private var permissionListener: ActivityResultCallback<Map<String, Boolean>>? = null
+
+    override fun onStart() {
+        super.onStart()
+
+        startActivityForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback { result ->
+                activityResultListener?.onActivityResult(result)
+            })
+
+        requestPermissions =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
+                permissionListener?.onActivityResult(map)
+            }
     }
 
-    @CallSuper
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
+    /**
+     * 跳转获取result
+     */
+    protected fun startActivityForResultNow(
+        callback: ActivityResultCallback<ActivityResult>,
+        intent: Intent
     ) {
-        super.onActivityResult(requestCode, resultCode, data)
+        this.activityResultListener = callback
+        startActivityForResult?.launch(intent)
+    }
+
+    /**
+     * 请求权限
+     */
+    protected fun requestPermissionForResultNow(
+        callback: ActivityResultCallback<Map<String, Boolean>>,
+        vararg permissions: String
+    ) {
+        this.permissionListener = callback
+        requestPermissions?.launch(permissions.toList().toTypedArray())
     }
 }

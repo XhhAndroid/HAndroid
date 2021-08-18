@@ -9,23 +9,17 @@
  *   注意：本内容仅限于内部传阅，禁止外泄以及用于其他的商业目的.
  *  *******************************************************************
  */
+package com.h.android.utils
 
-package com.h.android.utils;
+import android.view.animation.Interpolator
 
-import android.view.animation.Interpolator;
-
-public class SpringScaleInterpolator implements Interpolator {
-    //弹性因数
-    private float factor;
-
-    public SpringScaleInterpolator(float factor) {
-        this.factor = factor;
+class SpringScaleInterpolator(  //弹性因数
+    private val factor: Float
+) : Interpolator {
+    override fun getInterpolation(input: Float): Float {
+        return (Math.pow(
+            2.0,
+            (-10 * input).toDouble()
+        ) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1).toFloat()
     }
-
-    @Override
-    public float getInterpolation(float input) {
-
-        return (float) (Math.pow(2, -10 * input) * Math.sin((input - factor / 4) * (2 * Math.PI) / factor) + 1);
-    }
-
 }
