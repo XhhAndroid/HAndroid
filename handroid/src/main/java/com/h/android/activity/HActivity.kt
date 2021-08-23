@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import com.h.android.utils.HLog
 
 /**
@@ -13,7 +14,7 @@ import com.h.android.utils.HLog
  *@author zhangxiaohui
  *@describe
  */
-open class HActivity : ComponentActivity() {
+open class HActivity : FragmentActivity() {
 
     //must call register before onResume
     //功能同startActivityForResult

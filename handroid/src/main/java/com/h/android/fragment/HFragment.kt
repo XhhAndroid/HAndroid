@@ -40,6 +40,7 @@ open class HFragment : Fragment(){
      * @return
      */
     open fun onCreateViewOnce(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        HLog.d("--->life:onCreateViewOnce---" + javaClass.name)
         return null
     }
 
@@ -49,6 +50,7 @@ open class HFragment : Fragment(){
      * @param savedInstanceState
      */
     open fun onViewCreateOnce(view: View, savedInstanceState: Bundle?) {
+        HLog.d("--->life:onViewCreateOnce---" + javaClass.name)
     }
 
 
@@ -58,5 +60,20 @@ open class HFragment : Fragment(){
         if (firstCreateView) {
             onViewCreateOnce(view, savedInstanceState)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        HLog.d("--->life:onResume---" + javaClass.name)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        HLog.d("--->life:onPause---" + javaClass.name)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        HLog.d("--->life:onDestroy---" + javaClass.name)
     }
 }
