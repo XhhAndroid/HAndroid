@@ -1,6 +1,7 @@
 package com.h.android.activity
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -24,8 +25,9 @@ open class HActivity : FragmentActivity() {
     private var requestPermissions: ActivityResultLauncher<Array<String>>? = null
     private var permissionListener: ActivityResultCallback<Map<String, Boolean>>? = null
 
-    override fun onStart() {
-        super.onStart()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         startActivityForResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback { result ->
@@ -36,6 +38,12 @@ open class HActivity : FragmentActivity() {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
                 permissionListener?.onActivityResult(map)
             }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+
     }
 
     /**

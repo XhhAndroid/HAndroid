@@ -1,4 +1,4 @@
-package com.h.android.http.interceptor
+package com.h.android.http.annotation
 
 import com.h.android.http.UrlProvider
 import java.lang.annotation.Inherited

@@ -26,6 +26,6 @@ class TimeUtil {
             e.printStackTrace()
             return ""
         }
-        return date
+        return date ?: ""
     }
 }

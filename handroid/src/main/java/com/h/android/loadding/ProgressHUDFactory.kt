@@ -59,8 +59,10 @@ class ProgressHUDFactory private constructor(): LifecycleObserver {
             //add Observer
             lifecycleOwner.lifecycle.removeObserver(this)
             lifecycleOwner.lifecycle.addObserver(this)
-            progressHUD = progressHUDProvider!!.onCreateProgressHUD(lifecycleOwner)
-            progressViewMap[lifecycleOwner] = progressHUD
+            progressHUD = progressHUDProvider?.onCreateProgressHUD(lifecycleOwner)
+            progressHUD?.let{
+                progressViewMap[lifecycleOwner] = it
+            }
         }
         return progressHUD
     }

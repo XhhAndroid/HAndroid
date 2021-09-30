@@ -13,11 +13,15 @@ import com.h.android.HAndroid
 object HLog {
     private val TAG = "Hlog->"
 
+    fun e(tag: String, text: String?) {
+        e("$tag-$text")
+    }
+
     fun e(text: String?) {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!HAndroid.isDebug()) {
+        if (!HAndroid.isDebug) {
             return
         }
         Log.e(TAG, text)
@@ -27,17 +31,21 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!HAndroid.isDebug()) {
+        if (!HAndroid.isDebug) {
             return
         }
         Log.w(TAG, text)
+    }
+
+    fun d(tag: String?, text: String?) {
+        d("$tag-$text")
     }
 
     fun d(text: String?) {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!HAndroid.isDebug()) {
+        if (!HAndroid.isDebug) {
             return
         }
         Log.d(TAG, text)
@@ -47,7 +55,7 @@ object HLog {
         if (TextUtils.isEmpty(text)) {
             return
         }
-        if (!HAndroid.isDebug()) {
+        if (!HAndroid.isDebug) {
             return
         }
         Log.i(TAG, text)

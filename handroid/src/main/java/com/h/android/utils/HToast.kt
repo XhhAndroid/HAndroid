@@ -1,11 +1,7 @@
 package com.h.android.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,9 +12,6 @@ import androidx.annotation.UiThread
 import androidx.core.app.NotificationManagerCompat
 import com.h.android.HAndroid
 import com.h.android.R
-import java.lang.reflect.Field
-import java.lang.reflect.InvocationHandler
-import java.lang.reflect.Proxy
 
 /**
  * 2020/11/21
@@ -27,18 +20,7 @@ import java.lang.reflect.Proxy
  * @describe
  */
 object HToast {
-    private var sField_TN: Field? = null
-    private var sField_TN_Handler: Field? = null
-    private var iNotificationManagerObj: Any? = null
     private var noticeString: CharSequence? = null
-    fun hook(toast: Toast?) {
-        try {
-            val tn = sField_TN!![toast]
-            val preHandler = sField_TN_Handler!![tn] as Handler
-            sField_TN_Handler!![tn] = SafelyHandlerWrapper(preHandler)
-        } catch (e: Exception) {
-        }
-    }
 
     private val context: Context
         private get() = HAndroid.getApplication()
@@ -105,7 +87,7 @@ object HToast {
             return null
         }
         //app 后台不允许toast
-        if (HAndroid.getActivityStackProvider().isBackground) {
+        if (HAndroid.activityStackProvider?.isBackground == true) {
             return null
         }
         /**
@@ -113,50 +95,13 @@ object HToast {
          */
         noticeString = notice
         val toast = createToast(notice, type)
-        //fix bug #65709 BadTokenException from BugTags
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
-            hook(toast)
-        }
+
         if (isNotificationEnabled) {
             toast.show()
         } else {
             return null
         }
         return toast
-    }
-
-    /**
-     * 强制显示系统Toast
-     */
-    @Throws(Throwable::class)
-    private fun showSystemToast(toast: Toast, notice: CharSequence, type: ToastType) {
-        @SuppressLint("SoonBlockedPrivateApi") val getServiceMethod = Toast::class.java.getDeclaredMethod("getService")
-        getServiceMethod.isAccessible = true
-        //hook INotificationManager
-        if (iNotificationManagerObj == null) {
-            iNotificationManagerObj = getServiceMethod.invoke(null)
-            val iNotificationManagerCls = Class.forName("android.app.INotificationManager")
-            val iNotificationManagerProxy = Proxy.newProxyInstance(
-                toast.javaClass.classLoader,
-                arrayOf(iNotificationManagerCls),
-                InvocationHandler { proxy, method, args ->
-                    try {
-
-                        //强制使用系统Toast
-                        if ("enqueueToast" == method.name || "enqueueToastEx" == method.name) {  //华为p20 pro上为enqueueToastEx
-                            args[0] = "android"
-                        }
-                        return@InvocationHandler method.invoke(iNotificationManagerObj, *args)
-                    } catch (e: Throwable) {
-                        e.printStackTrace()
-                    }
-                    proxy
-                })
-            val sServiceFiled = Toast::class.java.getDeclaredField("sService")
-            sServiceFiled.isAccessible = true
-            sServiceFiled[null] = iNotificationManagerProxy
-        }
-        toast.show()
     }
 
     fun createToast(msg: CharSequence?, type: ToastType?): Toast {
@@ -179,7 +124,7 @@ object HToast {
         }
         text.text = msg
         val toast = Toast(HAndroid.getApplication())
-        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.setGravity(Gravity.BOTTOM, 0, 0)
         toast.duration = Toast.LENGTH_SHORT
         toast.view = view
         return toast
@@ -195,33 +140,5 @@ object HToast {
 
     enum class ToastType {
         NORMAL, ERROR, SUCCESS
-    }
-
-    private class SafelyHandlerWrapper(private val impl: Handler) : Handler() {
-        override fun dispatchMessage(msg: Message) {
-            try {
-                super.dispatchMessage(msg)
-            } catch (e: Exception) {
-            }
-        }
-
-        override fun handleMessage(msg: Message) {
-            impl.handleMessage(msg) //需要委托给原Handler执行
-        }
-    }
-
-    /**
-     * 通过反射封装 Toast 类中TN Binder内部类中的handler,
-     * 捕获BadTokenException, 解决Android API 25 引入的
-     * Bug
-     */
-    init {
-        try {
-            sField_TN = Toast::class.java.getDeclaredField("mTN")
-            sField_TN!!.isAccessible = true
-            sField_TN_Handler = sField_TN!!.type.getDeclaredField("mHandler")
-            sField_TN_Handler!!.isAccessible = true
-        } catch (e: Exception) {
-        }
     }
 }

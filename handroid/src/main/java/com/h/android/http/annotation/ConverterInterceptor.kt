@@ -1,10 +1,12 @@
-package com.ql.miye.net
+package com.h.android.http.annotation
 
+import com.h.android.http.interceptor.ResponseConverterInterceptor
+import okhttp3.Interceptor
 import java.lang.annotation.Inherited
 import kotlin.reflect.KClass
 
 /**
- *2020/12/5
+ *2021/9/23
  *@author zhangxiaohui
  *@describe
  */
@@ -12,6 +14,5 @@ import kotlin.reflect.KClass
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
 @Inherited
-annotation class RxJavaInterceptor(val value: Array<KClass<out RxJavaCallAdapterInterceptor>>) {
-
+annotation class ConverterInterceptor(val value: KClass<out ResponseConverterInterceptor>) {
 }

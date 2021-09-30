@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
-import com.h.android.HAndroid;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -149,14 +147,14 @@ public class AndroidActivityStackProvider extends SimpleActivityLifecycleCallbac
             e.printStackTrace();
         }
         try {
-            PackageManager packageManager = HAndroid.getApplication().getPackageManager();
+            PackageManager packageManager = HAndroid.INSTANCE.getApplication().getPackageManager();
             if (null == packageManager) {
                 return;
             }
-            final Intent intent = packageManager.getLaunchIntentForPackage(HAndroid.getApplication().getPackageName());
+            final Intent intent = packageManager.getLaunchIntentForPackage(HAndroid.INSTANCE.getApplication().getPackageName());
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                HAndroid.getApplication().startActivity(intent);
+                HAndroid.INSTANCE.getApplication().startActivity(intent);
             }
         } catch (Throwable e) {
             e.printStackTrace();
