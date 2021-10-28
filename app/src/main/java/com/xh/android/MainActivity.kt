@@ -91,7 +91,6 @@ class MainActivity : HActivity() {
         }, android.Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
-    @SuppressLint("CheckResult")
     fun showLoading() {
         Observable.just(1)
             .map { it ->
@@ -104,6 +103,7 @@ class MainActivity : HActivity() {
             }
             .compose(RxJavaHelper.setDefaultConfig(this))
             .compose(HAndroid.bindToProgressHud(this))
+            .`as`(HAndroid.autoDisposable(this))
             .subscribe()
     }
 }

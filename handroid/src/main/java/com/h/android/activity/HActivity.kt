@@ -9,6 +9,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
 import com.h.android.utils.HLog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 /**
  *2020/11/27
@@ -40,11 +43,6 @@ open class HActivity : FragmentActivity() {
             }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-
-    }
 
     /**
      * 跳转获取result

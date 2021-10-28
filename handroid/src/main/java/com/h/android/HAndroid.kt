@@ -2,10 +2,12 @@ package com.h.android
 
 import android.app.Application
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.h.android.listener.IToastListener
 import com.h.android.loadding.ProgressHUDFactory.Companion.get
 import com.h.android.loadding.ProgressHUDFactory.ProgressHUDProvider
+import com.h.android.loadding.ProgressListener
 import com.h.android.rx.transformer.ProgressHUDTransformerImpl
 import com.h.android.rx.transformer.UIErrorTransformer
 import com.h.android.stack.AndroidActivityStackProvider
@@ -16,6 +18,7 @@ import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 /**
@@ -51,10 +54,10 @@ object HAndroid {
     }
 
     /**
-     * 绑定loading
-     *
+     * 绑定loading 针对rxjava使用
      * @param lifecycleOwner
      * @param <T>
+     * @Descrip {@Link showLoadingDialog(),dismissLoadingDialog()}
      * @return
     </T> */
     fun <T> bindToProgressHud(lifecycleOwner: LifecycleOwner): ProgressHUDTransformerImpl<T> {
@@ -70,6 +73,13 @@ object HAndroid {
     }
 
     /**
+     * 绑定错误提示-kotlin携程
+     */
+    fun bindErrorToast(cause: Throwable) {
+        consumerLocal.accept(cause)
+    }
+
+    /**
      * 自动取消rx流
      */
     fun <T> autoDisposable(lifecycle: LifecycleOwner): AutoDisposeConverter<T> {
@@ -80,16 +90,16 @@ object HAndroid {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycle, untilEvent))
     }
 
-    fun cancelDisposable(disposable: Disposable?){
+    fun cancelDisposable(disposable: Disposable?) {
         disposable?.let {
-            if(!it.isDisposed){
+            if (!it.isDisposed) {
                 it.dispose()
             }
         }
     }
 
     fun toast(): IToastListener? {
-        if(iToast == null){
+        if (iToast == null) {
             HLog.e("must init addToast()")
             return null
         }
@@ -104,6 +114,7 @@ object HAndroid {
     }
 
     private var iToast: IToastListener? = null
+    private var iProgress: ProgressListener? = null
 
     class Builder(application: Application) {
         var application: Application = Objects.requireNonNull(application)
@@ -116,7 +127,7 @@ object HAndroid {
         }
 
         /**
-         * 来自function异常
+         * 来自rx流function异常
          */
         fun addErrorConvertFunction(errorConvertFunction: Function<Throwable, String>): Builder {
             this.errorConvertFunction = Objects.requireNonNull(errorConvertFunction)
@@ -124,14 +135,17 @@ object HAndroid {
         }
 
         /**
-         * 来自doError异常
+         * 来自rx流doError异常
          */
         fun addErrorHandler(consumer: Consumer<Throwable>): Builder {
             consumerLocal = consumer
             return this
         }
 
-        fun addToast(iToastListener: IToastListener):Builder {
+        /**
+         * 添加toast显示类
+         */
+        fun addToast(iToastListener: IToastListener): Builder {
             iToast = iToastListener
             return this
         }

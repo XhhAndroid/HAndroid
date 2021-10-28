@@ -1,6 +1,6 @@
 package com.xh.android
 
-import com.h.android.http.interceptor.BaseUrlProvider
+import com.h.android.http.annotation.BaseUrlProvider
 
 /**
  *2021/1/22
