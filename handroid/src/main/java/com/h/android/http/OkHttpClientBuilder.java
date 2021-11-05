@@ -1,12 +1,14 @@
 package com.h.android.http;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -111,7 +113,11 @@ public class OkHttpClientBuilder {
     private static class TrustAllHostnameVerifier implements HostnameVerifier {
         @Override
         public boolean verify(String hostname, SSLSession session) {
-            return true;
+            if (TextUtils.isEmpty(hostname)) {
+                return false;
+            }
+            return !Arrays.asList(VERIFY_HOST_NAME_ARRAY).contains(hostname);
         }
     }
+    private static final String[] VERIFY_HOST_NAME_ARRAY = new String[]{};
 }
